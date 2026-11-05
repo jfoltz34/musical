@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Musical — AI Song Generator</title>
+  <meta name="description" content="Generate original songs with AI. Describe a vibe or write your own lyrics." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">♪</span> Musical</div>
+    <div class="credits" id="credits" title="Remaining API credits">—</div>
+  </header>
+
+  <main class="layout">
+    <section class="panel composer">
+      <h1>Create a song</h1>
+      <p class="sub">Describe a vibe and let AI do the rest, or switch to Custom for full control.</p>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-mode="simple" role="tab">Simple</button>
+        <button class="tab" data-mode="custom" role="tab">Custom</button>
+      </div>
+
+      <form id="form" autocomplete="off">
+        <!-- Simple mode -->
+        <div class="mode simple">
+          <label for="prompt">Song description</label>
+          <textarea id="prompt" maxlength="3000" rows="5" placeholder="An upbeat summer pop song about a road trip with friends, catchy chorus"></textarea>
+          <div class="chips" id="ideaChips"></div>
+        </div>
+
+        <!-- Custom mode -->
+        <div class="mode custom hidden">
+          <label for="title">Title</label>
+          <input id="title" maxlength="80" placeholder="Midnight Drive" />
+
+          <label for="style">Style of music</label>
+          <input id="style" maxlength="1000" placeholder="synthwave, dreamy female vocals, 110 bpm" />
+          <div class="chips" id="styleChips"></div>
+
+          <div class="lyrics-block">
+            <div class="label-row">
+              <label for="lyrics">Lyrics</label>
+              <button type="button" class="link-btn" id="aiLyricsBtn">✨ Write with AI</button>
+            </div>
+            <div class="ai-lyrics hidden" id="aiLyrics">
+              <input id="lyricsPrompt" maxlength="200" placeholder="What should the lyrics be about?" />
+              <button type="button" class="btn small" id="lyricsGo">Generate</button>
+            </div>
+            <textarea id="lyrics" maxlength="5000" rows="10" placeholder="[Verse]&#10;City lights are fading slow...&#10;&#10;[Chorus]&#10;..."></textarea>
+          </div>
+
+          <details class="advanced">
+            <summary>Advanced options</summary>
+            <label for="negativeTags">Exclude styles</label>
+            <input id="negativeTags" maxlength="1000" placeholder="heavy metal, screaming" />
+
+            <div class="grid2">
+              <div>
+                <label for="vocalGender">Vocal gender</label>
+                <select id="vocalGender">
+                  <option value="">Any</option>
+                  <option value="f">Female</option>
+                  <option value="m">Male</option>
+                </select>
+              </div>
+              <div>
+                <label for="duration">Duration (sec)</label>
+                <input id="duration" type="number" min="10" max="360" placeholder="Auto" />
+              </div>
+            </div>
+
+            <label for="styleWeight">Style adherence <span class="val" data-for="styleWeight"></span></label>
+            <input id="styleWeight" type="range" min="0" max="1" step="0.05" value="0.65" />
+            <label for="weirdnessConstraint">Weirdness <span class="val" data-for="weirdnessConstraint"></span></label>
+            <input id="weirdnessConstraint" type="range" min="0" max="1" step="0.05" value="0.5" />
+            <label for="variety">Variety <span class="val" data-for="variety"></span></label>
+            <input id="variety" type="range" min="0" max="4" step="1" value="1" />
+          </details>
+        </div>
+
+        <div class="row-controls">
+          <label class="toggle">
+            <input type="checkbox" id="instrumental" />
+            <span class="slider"></span>
+            Instrumental
+          </label>
+          <select id="model" aria-label="Model">
+            <option value="V6">V6 · best quality</option>
+            <option value="V6_MINI">V6 Mini · fast</option>
+            <option value="V6_WILD">V6 Wild · bold</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn primary" id="createBtn">
+          <span class="btn-label">Create</span>
+        </button>
+        <p class="hint">Each request creates 2 variations. Generation usually takes 1–3 minutes.</p>
+      </form>
+    </section>
+
+    <section class="panel library">
+      <div class="label-row">
+        <h2>Your songs</h2>
+        <button class="link-btn" id="clearBtn" title="Remove all songs from this browser">Clear</button>
+      </div>
+      <p class="sub">Saved in this browser. Audio files are hosted for about 14 days — download what you want to keep.</p>
+      <div id="tasks"></div>
+      <div class="empty" id="empty">
+        <div class="empty-icon">🎧</div>
+        <p>No songs yet. Create your first one!</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Persistent player -->
+  <div class="player hidden" id="player">
+    <img id="playerCover" alt="" />
+    <div class="player-meta">
+      <div class="player-title" id="playerTitle"></div>
+      <div class="player-tags" id="playerTags"></div>
+    </div>
+    <audio id="audio" controls preload="none"></audio>
+  </div>
+
+  <!-- Password dialog -->
+  <dialog id="pwDialog">
+    <form method="dialog" id="pwForm">
+      <h3>Enter access password</h3>
+      <input id="pwInput" type="password" required />
+      <button class="btn primary" type="submit">Continue</button>
+    </form>
+  </dialog>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
