@@ -270,7 +270,7 @@
       save();
       render();
       btn.disabled = false;
-      btn.querySelector(".btn-label").textContent = "Create";
+      btn.querySelector(".btn-label").textContent = "Create 🔥";
       refreshCredits();
     }
   }

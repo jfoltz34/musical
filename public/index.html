@@ -7,10 +7,22 @@
   <meta name="description" content="Generate original songs with AI. Describe a vibe or write your own lyrics." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Permanent+Marker&family=Rubik+Spray+Paint&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="wall" aria-hidden="true">
+    <div class="tags">
+      <span class="tag t1">BEATS</span>
+      <span class="tag t2">LOUD</span>
+      <span class="tag t3">mic check</span>
+      <span class="tag t4">DROP IT</span>
+      <span class="tag t5">vibes</span>
+      <span class="tag t6">REMIX</span>
+      <span class="tag t7">808</span>
+      <span class="tag t8">turn it up!</span>
+    </div>
+  </div>
   <header class="topbar">
     <div class="brand"><span class="logo">♪</span> Musical</div>
     <div class="credits" id="credits" title="Remaining API credits">—</div>
@@ -18,7 +30,7 @@
 
   <main class="layout">
     <section class="panel composer">
-      <h1>Create a song</h1>
+      <h1>Make a <span class="hl">banger</span></h1>
       <p class="sub">Describe a vibe and let AI do the rest, or switch to Custom for full control.</p>
 
       <div class="tabs" role="tablist">
@@ -98,7 +110,7 @@
         </div>
 
         <button type="submit" class="btn primary" id="createBtn">
-          <span class="btn-label">Create</span>
+          <span class="btn-label">Create 🔥</span>
         </button>
         <p class="hint">Each request creates 2 variations. Generation usually takes 1–3 minutes.</p>
       </form>
@@ -106,7 +118,7 @@
 
     <section class="panel library">
       <div class="label-row">
-        <h2>Your songs</h2>
+        <h2>Your tracks</h2>
         <button class="link-btn" id="clearBtn" title="Remove all songs from this browser">Clear</button>
       </div>
       <p class="sub">Saved in this browser. Audio files are hosted for about 14 days — download what you want to keep.</p>
